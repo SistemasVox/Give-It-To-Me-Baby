@@ -2,22 +2,25 @@ import javax.swing.JOptionPane;
 
 public class Give {
 
-	public static void main(String[] args) {
-		String txt = JOptionPane.showInputDialog("Mensagem:");
-		txt = txt.trim();
-		txt = txt.substring(0, 1).toUpperCase()+txt.substring(1, txt.length());
-		JOptionPane.showMessageDialog(null, txt.length() + " caracteres.");
+    public static void main(String[] args) {
+        String txt = JOptionPane.showInputDialog("Mensagem:").trim();
+        StringBuilder formattedText = new StringBuilder(txt.length());
 
-		for (int i = 0; i < txt.length(); i++) {
+        boolean capitalizeNext = true;
+        for (char c : txt.toCharArray()) {
+            if (capitalizeNext && Character.isLetter(c)) {
+                formattedText.append(Character.toUpperCase(c));
+                capitalizeNext = false;
+            } else {
+                formattedText.append(c);
+                capitalizeNext = c == ' ';
+            }
+        }
 
-			if (txt.substring(i, (i + 1)).equals(" ")) {
-				txt = txt.substring(0, i) + " " + txt.substring((i + 1), (i + 2)).toUpperCase() + txt.substring((i + 2), txt.length());
-			}
+        JOptionPane.showMessageDialog(null, formattedText.length() + " caracteres.");
 
-		}
-		vwGive give = new vwGive();
-		give.setTextArea(txt);
-		give.setVisible(true);
-	}
-
+        vwGive give = new vwGive();
+        give.setTextArea(formattedText.toString());
+        give.setVisible(true);
+    }
 }
